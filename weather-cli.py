@@ -7,18 +7,24 @@ at = mint = maxt = ht = wd = ""
 # ------------------------------------------------------------------------------------------------------------------
 # import: Import raw weather data from a text file.
 # ------------------------------------------------------------------------------------------------------------------
-def imp_csv_data():
-    filename = "weather.csv"
+def imp_csv_data(file):
+    # filename = "weather.csv"
+    import os
 
-    with open(filename, "r") as csvfile:  # open csv file
-        csvreader = csv.reader(csvfile)  # make a csv reader
-        global fields
-        # assigning the current row to fields[] and moving reader to next row
-        fields = next(csvreader)
+    if os.path.isfile(file) is True:
+        with open(file, "r") as csvfile:  # open csv file
+            csvreader = csv.reader(csvfile)  # make a csv reader
+            global fields, rows
+            # assigning the current row to fields[] and moving reader to next row
+            fields = next(csvreader)
 
-        # iterating through remaining rows of csv file & append as a list in rows[]
-        for row in csvreader:
-            rows.append(row)
+            # iterating through remaining rows of csv file & append as a list in rows[]
+            for row in csvreader:
+                rows.append(row)
+
+        return True
+    else:
+        return False
 
 
 # ------------------------------------------------------------------------------------------------------------------
@@ -138,9 +144,6 @@ def exp_csv_data():
         "Windy Day",
     ]
     row = [at, mint, maxt, ht, wd]
-    # for r in row:
-    #     print(r)
-
     filename = "results.csv"
 
     with open(filename, "w") as csvfile:  # writing to csv file
@@ -150,16 +153,113 @@ def exp_csv_data():
 
 
 # ------------------------------------------------------------------------------------------------------------------
+# Logging: Log every action, such as importing data, performing calculations, and exporting results.
+# ------------------------------------------------------------------------------------------------------------------
+def exp_csv_log(stat):
+    fields = ["Datetime", "Import File", "Export File", "Status"]
+
+    from datetime import datetime
+
+    now = datetime.now()
+    now = now.strftime("%d/%m/%Y %H:%M:%S")
+    if stat is True:
+        row = [now, "weather.csv", "results.csv", "Success"]
+    else:
+        row = [now, "weather.csv", "results.csv", "Failure: reason"]
+
+    filename = "log.csv"
+
+    import os
+
+    with open(filename, "a", newline="") as csvfile:  # writing to csv file
+        csvwriter = csv.writer(csvfile)  # creating a csv writer object
+        if os.stat("log.csv").st_size == 0:
+            csvwriter.writerow(fields)  # writing the fields
+            csvwriter.writerow(row)  # writing the data rows
+        else:
+            csvwriter.writerow(row)  # writing the data rows
+
+
+# ------------------------------------------------------------------------------------------------------------------
+# CLI Commands implementation:
+# python weather_cli.py import --file raw_weather_data.txt
+# python weather_cli.py analyze --range "2023-01-01 to 2023-01-31"
+# python weather_cli.py export --format csv
+# ------------------------------------------------------------------------------------------------------------------
+def numOfDays(date1, date2):
+    # check which date is greater to avoid days output in -ve number
+    if date2 > date1:
+        return (date2 - date1).days
+    else:
+        return (date1 - date2).days
+
+
+def cli_comm():
+    import argparse
+
+    # Initialize parser
+    parser = argparse.ArgumentParser()
+
+    m1 = "Usage: python weather-cli.py --file weather.csv"
+    m2 = 'Usage: python weather-cli.py --range "2023-01-01 to 2023-01-31"'
+    # m3 = "Usage: python weather-cli.py --format csv"
+
+    # Adding optional argument
+    # parser.add_argument("-o", "--inppp", help="Show Output")
+    parser.add_argument("-f", "--file", help=m1)
+    parser.add_argument("-r", "--range", help=m2)
+    # parser.add_argument("-e", "--format", help=m3)
+
+    # Read arguments from command line
+    args = parser.parse_args()
+
+    if args.file:
+        if imp_csv_data(args.file) is True:
+            print('"% s" imported successfully.' % args.file)
+        else:
+            print("% s not present." % args.file)
+
+    if args.range:
+        date_range = str(args.range).split(" to ")
+        st_date = date_range[0]
+        ed_date = date_range[1]
+        # difference of both dates from 2023-01-01
+        from datetime import date
+
+        Y1, M1, D1 = st_date.split("-")
+        Y2, M2, D2 = ed_date.split("-")
+        date0 = date(2023, 1, 1)
+        date1 = date(int(Y1), int(M1), int(D1))
+        date2 = date(int(Y2), int(M2), int(D2))
+        st = numOfDays(date0, date1)
+        ed = numOfDays(date1, date2)
+        sahi = True
+        sahi = stat(st + 1, ed + 1)
+        if sahi is True:
+            print("% s, range analysed successfully." % args.range)
+            exp_csv_data()
+        else:
+            print("The range of date is from 2023-01-01 to 2023-12-31")
+        exp_csv_log(sahi)
+
+    # if args.format:
+    #     print("% s exported successfully." % args.format)
+
+
+# ------------------------------------------------------------------------------------------------------------------
 # main
 # ------------------------------------------------------------------------------------------------------------------
 if __name__ == "__main__":
-    imp_csv_data()
-    sahi = True
-    sahi = stat(1, 10)
-    if sahi is True:
-        exp_csv_data()
-    else:
-        print("The range of days is from 1 to 365.")
+    cli_comm()
+
+    # imp_csv_data()
+    # sahi = True
+    # sahi = stat(1, 36)
+    # if sahi is True:
+    #     exp_csv_data()
+    # else:
+    #     print("The range of days is from 1 to 365.")
+    # exp_csv_log(sahi)
 # ------------------------------------------------------------------------------------------------------------------
 #                   NOTES:
 # will convert dates in user inputs to the day number (1-365)
