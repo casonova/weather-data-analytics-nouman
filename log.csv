@@ -2,3 +2,30 @@ Datetime,Import File,Export File,Status
 23/10/2023 12:31:29,weather.csv,results.csv,Success
 23/10/2023 17:47:26,weather.csv,results.csv,Success
 23/10/2023 17:49:34,weather.csv,results.csv,Success
+24/10/2023 13:57:33,weather.csv,results.csv,Success
+
+# ------------------------------------------------------------------------------------------------------------------
+# Logging: Log every action, such as importing data, performing calculations, and exporting results.
+# ------------------------------------------------------------------------------------------------------------------
+# def exp_csv_log(stat):
+#     fields = ["Datetime", "Import File", "Export File", "Status"]
+
+#     now = datetime.now()
+#     now = now.strftime("%d/%m/%Y %H:%M:%S")
+#     if stat is True:
+#         row = [now, "weather.csv", "results.csv", "Success"]
+#     else:
+#         row = [now, "weather.csv", "results.csv", "Failure: reason"]
+
+#     filename = "log.csv"
+
+#     with open(filename, "a", newline="") as csvfile:  # writing to csv file
+#         csvwriter = csv.writer(csvfile)  # creating a csv writer object
+#         if os.stat("log.csv").st_size == 0:
+#             csvwriter.writerow(fields)  # writing the fields
+#             csvwriter.writerow(row)  # writing the data rows
+#         else:
+#             csvwriter.writerow(row)  # writing the data rows
+
+
+

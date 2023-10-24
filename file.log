@@ -1,0 +1,62 @@
+2023-10-24 16:14:55,712 INFO weather.csv imported.
+2023-10-24 16:14:55,712 INFO Sample raw data exported in raw_sample.csv
+2023-10-24 16:15:16,393 INFO weather.csv imported.
+2023-10-24 16:15:16,393 INFO Sample raw data exported in raw_sample.csv
+2023-10-24 16:15:16,393 INFO Average Temperature: 237.76
+2023-10-24 16:15:16,393 INFO Minimum Temperature: 6.1
+2023-10-24 16:15:16,393 INFO Maximum Temperature: 35.8
+2023-10-24 16:15:16,393 INFO Humidity Trend: Decreasing
+2023-10-24 16:15:16,393 INFO Windy Day: 21/02/2023
+2023-10-24 16:15:16,393 INFO Results exported in results.csv
+2023-10-24 16:31:44,468 INFO weather.csv imported.
+2023-10-24 16:41:59,054 INFO weather.csv imported.
+2023-10-24 16:42:40,615 INFO weather.csv imported.
+2023-10-24 16:44:18,417 INFO weather.csv imported.
+2023-10-24 16:45:07,683 INFO weather.csv imported.
+2023-10-24 16:45:22,508 INFO weather.csv imported.
+2023-10-24 16:47:45,408 INFO weather.csv imported.
+2023-10-24 16:48:11,618 INFO weather.csv imported.
+2023-10-24 16:50:17,870 INFO weather.csv imported.
+2023-10-24 16:50:29,988 INFO weather.csv imported.
+2023-10-24 16:58:17,370 INFO weather.csv imported.
+2023-10-24 16:59:34,512 INFO avg called.
+2023-10-24 16:59:34,522 INFO weather.csv imported.
+2023-10-24 17:00:08,486 INFO avg called.
+2023-10-24 17:00:08,486 INFO weather.csv imported.
+2023-10-24 17:02:32,123 INFO weather.csv imported.
+2023-10-24 17:02:32,124 INFO avg called.
+2023-10-24 17:03:07,431 INFO weather.csv imported.
+2023-10-24 17:03:07,431 INFO avg called.
+2023-10-24 17:17:53,620 INFO weather.csv imported.
+2023-10-24 17:17:53,620 INFO avg called.
+2023-10-24 17:19:07,290 INFO weather.csv imported.
+2023-10-24 17:19:07,290 INFO avg called.
+2023-10-24 17:19:07,290 INFO min_temp called.
+2023-10-24 17:19:07,290 INFO max_temp called.
+2023-10-24 17:20:01,975 INFO weather.csv imported.
+2023-10-24 17:20:01,975 INFO avg called.
+2023-10-24 17:20:01,975 INFO min_temp called.
+2023-10-24 17:20:01,975 INFO max_temp called.
+
+2023-10-24 17:22:31,910 INFO weather.csv imported.
+2023-10-24 17:22:31,910 INFO avg called.
+2023-10-24 17:22:31,910 INFO min_temp called.
+2023-10-24 17:22:31,910 INFO max_temp called.
+2023-10-24 17:22:31,910 INFO hum_trend called.
+2023-10-24 17:22:56,771 INFO weather.csv imported.
+2023-10-24 17:22:56,771 INFO avg called.
+2023-10-24 17:22:56,771 INFO min_temp called.
+2023-10-24 17:22:56,771 INFO max_temp called.
+2023-10-24 17:22:56,771 INFO hum_trend called.
+2023-10-24 17:27:57,973 INFO weather.csv imported.
+2023-10-24 17:27:57,973 INFO avg called.
+2023-10-24 17:27:57,973 INFO min_temp called.
+2023-10-24 17:27:57,973 INFO max_temp called.
+2023-10-24 17:27:57,973 INFO hum_trend called.
+2023-10-24 17:27:57,973 INFO max_wind_day called.
+2023-10-24 17:28:10,508 INFO weather.csv imported.
+2023-10-24 17:28:10,508 INFO avg called.
+2023-10-24 17:28:10,509 INFO min_temp called.
+2023-10-24 17:28:10,509 INFO max_temp called.
+2023-10-24 17:28:10,509 INFO hum_trend called.
+2023-10-24 17:28:10,510 INFO max_wind_day called.

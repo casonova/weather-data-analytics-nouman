@@ -1,7 +1,25 @@
 import csv
+import os
+from datetime import datetime, date
+import argparse
+import logging
 
 fields = rows = []
 at = mint = maxt = ht = wd = ""
+
+# ------------------------------------------------------------------------------------------------------------------
+# Logger configurations:
+# ------------------------------------------------------------------------------------------------------------------
+# Create and configure logger
+logging.basicConfig(
+    filename="file.log", format="%(asctime)s %(levelname)s %(message)s", filemode="a"
+)
+
+# Creating an object
+logger = logging.getLogger()
+
+# Setting the threshold of logger to DEBUG
+logger.setLevel(logging.DEBUG)
 
 
 # ------------------------------------------------------------------------------------------------------------------
@@ -9,7 +27,6 @@ at = mint = maxt = ht = wd = ""
 # ------------------------------------------------------------------------------------------------------------------
 def imp_csv_data(file):
     # filename = "weather.csv"
-    import os
 
     if os.path.isfile(file) is True:
         with open(file, "r") as csvfile:  # open csv file
@@ -21,9 +38,10 @@ def imp_csv_data(file):
             # iterating through remaining rows of csv file & append as a list in rows[]
             for row in csvreader:
                 rows.append(row)
-
+        logger.info(f"{file} imported.")
         return True
     else:
+        logger.error(f"{file} not found!")
         return False
 
 
@@ -53,6 +71,7 @@ def avg_max(st, ed):  # 1-10 total range (1-366)
 def avg(st, ed):  # 1-10 total range (1-366)
     # return (avg_min(st, ed) + avg_max(st, ed)) / 2
     # float("{:.2f}".format(x))
+    logger.info("avg called.")
     return float("{:.2f}".format((avg_min(st, ed) + avg_max(st, ed)) / 2))
 
 
@@ -62,6 +81,7 @@ def min_temp(st, ed):
         for col in row[:1]:
             mins.append(float(col))
 
+    logger.info("min_temp called.")
     return min(mins)
 
 
@@ -71,6 +91,7 @@ def max_temp(st, ed):
         for col in row[1:2]:
             maxs.append(float(col))
 
+    logger.info("max_temp called.")
     return max(maxs)
 
 
@@ -90,6 +111,7 @@ def hum_trend(st, ed):
 
     hum1 = sum(hum1) / len(hum1)
     hum2 = sum(hum2) / len(hum2)
+    logger.info("hum_trend called.")
     if hum1 > hum2:
         return "Decreasing"
     elif hum1 < hum2:
@@ -110,6 +132,7 @@ def max_wind_day(st, ed):
     r_id = max_wind.index(max(max_wind))  # getting the result index
     r_id += st - 1  # w.r.t given range
     # return date and day of the r_id
+    logger.info("max_wind_day called.")
     return str(rows[r_id][22:23])[2:-2]
 
 
@@ -123,13 +146,13 @@ def stat(st, ed):
     ht = hum_trend(st, ed)
     wd = max_wind_day(st, ed)
 
-    return True
+    logger.info(f"Average Temperature: {at}")
+    logger.info(f"Minimum Temperature: {mint}")
+    logger.info(f"Maximum Temperature: {maxt}")
+    logger.info(f"Humidity Trend: {ht}")
+    logger.info(f"Windy Day: {wd}")
 
-    # print("Average Temperature: " + at)
-    # print("Minimum Temperature: " + mint)
-    # print("Maximum Temperature: " + maxt)
-    # print("Humidity Trend: " + ht)
-    # print("Windy Day: " + wd)
+    return True
 
 
 # ------------------------------------------------------------------------------------------------------------------
@@ -151,40 +174,25 @@ def exp_csv_data():
         csvwriter.writerow(fields)  # writing the fields
         csvwriter.writerow(row)  # writing the data rows
 
+    logger.info(f"Results exported in {filename}")
+
 
 # ------------------------------------------------------------------------------------------------------------------
-# Logging: Log every action, such as importing data, performing calculations, and exporting results.
+# export raw data to a CSV file to verify proper functioning of import command.
 # ------------------------------------------------------------------------------------------------------------------
-def exp_csv_log(stat):
-    fields = ["Datetime", "Import File", "Export File", "Status"]
+def exp_raw_data():
+    filename = "raw_sample.csv"
 
-    from datetime import datetime
-
-    now = datetime.now()
-    now = now.strftime("%d/%m/%Y %H:%M:%S")
-    if stat is True:
-        row = [now, "weather.csv", "results.csv", "Success"]
-    else:
-        row = [now, "weather.csv", "results.csv", "Failure: reason"]
-
-    filename = "log.csv"
-
-    import os
-
-    with open(filename, "a", newline="") as csvfile:  # writing to csv file
+    with open(filename, "w", newline="") as csvfile:  # writing to csv file
         csvwriter = csv.writer(csvfile)  # creating a csv writer object
-        if os.stat("log.csv").st_size == 0:
-            csvwriter.writerow(fields)  # writing the fields
+        csvwriter.writerow(fields)  # writing the fields
+        for row in rows[:5]:
             csvwriter.writerow(row)  # writing the data rows
-        else:
-            csvwriter.writerow(row)  # writing the data rows
+    logger.info(f"Sample raw data exported in {filename}")
 
 
 # ------------------------------------------------------------------------------------------------------------------
 # CLI Commands implementation:
-# python weather_cli.py import --file raw_weather_data.txt
-# python weather_cli.py analyze --range "2023-01-01 to 2023-01-31"
-# python weather_cli.py export --format csv
 # ------------------------------------------------------------------------------------------------------------------
 def numOfDays(date1, date2):
     # check which date is greater to avoid days output in -ve number
@@ -195,8 +203,6 @@ def numOfDays(date1, date2):
 
 
 def cli_comm():
-    import argparse
-
     # Initialize parser
     parser = argparse.ArgumentParser()
 
@@ -215,7 +221,11 @@ def cli_comm():
 
     if args.file:
         if imp_csv_data(args.file) is True:
-            print('"% s" imported successfully.' % args.file)
+            exp_raw_data()
+            print(
+                '"% s" imported successfully. You can check sample data in raw_sample.csv'
+                % args.file
+            )
         else:
             print("% s not present." % args.file)
 
@@ -224,7 +234,6 @@ def cli_comm():
         st_date = date_range[0]
         ed_date = date_range[1]
         # difference of both dates from 2023-01-01
-        from datetime import date
 
         Y1, M1, D1 = st_date.split("-")
         Y2, M2, D2 = ed_date.split("-")
@@ -240,7 +249,7 @@ def cli_comm():
             exp_csv_data()
         else:
             print("The range of date is from 2023-01-01 to 2023-12-31")
-        exp_csv_log(sahi)
+        # exp_csv_log(sahi)
 
     # if args.format:
     #     print("% s exported successfully." % args.format)
@@ -251,15 +260,6 @@ def cli_comm():
 # ------------------------------------------------------------------------------------------------------------------
 if __name__ == "__main__":
     cli_comm()
-
-    # imp_csv_data()
-    # sahi = True
-    # sahi = stat(1, 36)
-    # if sahi is True:
-    #     exp_csv_data()
-    # else:
-    #     print("The range of days is from 1 to 365.")
-    # exp_csv_log(sahi)
 # ------------------------------------------------------------------------------------------------------------------
 #                   NOTES:
 # will convert dates in user inputs to the day number (1-365)
