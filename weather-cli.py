@@ -1,11 +1,16 @@
 import csv
 import os
-from datetime import datetime, date
+from datetime import date
 import argparse
 import logging
+import matplotlib.pyplot as plt
 
 fields = rows = []
 at = mint = maxt = ht = wd = ""
+mins = []
+maxs = []
+
+st_date = ed_date = ""
 
 # ------------------------------------------------------------------------------------------------------------------
 # Logger configurations:
@@ -19,7 +24,7 @@ logging.basicConfig(
 logger = logging.getLogger()
 
 # Setting the threshold of logger to DEBUG
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO)
 
 
 # ------------------------------------------------------------------------------------------------------------------
@@ -76,7 +81,7 @@ def avg(st, ed):  # 1-10 total range (1-366)
 
 
 def min_temp(st, ed):
-    mins = []
+    global mins
     for row in rows[(st - 1) : ed]:
         for col in row[:1]:
             mins.append(float(col))
@@ -86,7 +91,7 @@ def min_temp(st, ed):
 
 
 def max_temp(st, ed):
-    maxs = []
+    global maxs
     for row in rows[(st - 1) : ed]:
         for col in row[1:2]:
             maxs.append(float(col))
@@ -192,6 +197,19 @@ def exp_raw_data():
 
 
 # ------------------------------------------------------------------------------------------------------------------
+# 1- Bonus:
+# Implement additional analytics features, like identifying patterns or anomalies in the weather data.
+# Use a data visualization library to generate graphs based on the analytics:
+# ------------------------------------------------------------------------------------------------------------------
+def plotting():
+    plt.plot(mins, label="Minimum Temperature")
+    plt.plot(maxs, label="Maximum Temperature")
+    plt.title(f"Temperature Analysis in range {st_date} to {ed_date}")
+    plt.legend()
+    plt.savefig("plot")
+
+
+# ------------------------------------------------------------------------------------------------------------------
 # CLI Commands implementation:
 # ------------------------------------------------------------------------------------------------------------------
 def numOfDays(date1, date2):
@@ -231,10 +249,11 @@ def cli_comm():
 
     if args.range:
         date_range = str(args.range).split(" to ")
+        global st_date, ed_date
         st_date = date_range[0]
         ed_date = date_range[1]
-        # difference of both dates from 2023-01-01
 
+        # difference of both dates from 2023-01-01
         Y1, M1, D1 = st_date.split("-")
         Y2, M2, D2 = ed_date.split("-")
         date0 = date(2023, 1, 1)
@@ -247,10 +266,10 @@ def cli_comm():
         if sahi is True:
             print("% s, range analysed successfully." % args.range)
             exp_csv_data()
+            plotting()
         else:
             print("The range of date is from 2023-01-01 to 2023-12-31")
-        # exp_csv_log(sahi)
-
+        
     # if args.format:
     #     print("% s exported successfully." % args.format)
 

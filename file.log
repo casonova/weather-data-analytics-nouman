@@ -60,3 +60,16 @@
 2023-10-24 17:28:10,509 INFO max_temp called.
 2023-10-24 17:28:10,509 INFO hum_trend called.
 2023-10-24 17:28:10,510 INFO max_wind_day called.
+2023-10-25 13:01:43,555 INFO weather.csv imported.
+2023-10-25 13:01:43,555 INFO Sample raw data exported in raw_sample.csv
+2023-10-25 13:01:43,555 INFO avg called.
+2023-10-25 13:01:43,555 INFO min_temp called.
+2023-10-25 13:01:43,555 INFO max_temp called.
+2023-10-25 13:01:43,555 INFO hum_trend called.
+2023-10-25 13:01:43,555 INFO max_wind_day called.
+2023-10-25 13:01:43,555 INFO Average Temperature: 56.98
+2023-10-25 13:01:43,555 INFO Minimum Temperature: 6.1
+2023-10-25 13:01:43,555 INFO Maximum Temperature: 33.4
+2023-10-25 13:01:43,555 INFO Humidity Trend: Increasing
+2023-10-25 13:01:43,555 INFO Windy Day: 04/01/2023
+2023-10-25 13:01:43,555 INFO Results exported in results.csv
